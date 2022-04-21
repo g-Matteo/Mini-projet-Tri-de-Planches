@@ -1,0 +1,75 @@
+
+def creer_pile(taille:int):
+    """Créer et renvoie une liste python de taille 'taille'+1 représentant un TAD pile de taille fixe 'taille',
+    et où l'indice 0 de la liste représente la valeur de la plus haute de la pile, soit 0 dans la pile retournée"""
+    pile=(taille+1)*[None]
+    pile[0]=0
+    return pile
+
+
+def empiler(nom:list, valeur:int):
+    """Permet d'empiler une valeur, rajoute la valeur à l'emplacement max+1 de la liste, qui est stocké à l'indice 0 de la liste,
+    cependant si la liste est déjà pleine il y aura une erreur, car on représente une pile de taille fixe
+    provoque un effet de bord"""
+    nom[nom[0]+1] = valeur
+    nom[0]+=1
+
+def depiler(nom:list):
+    valeur=nom[nom[0]]
+    """Permet de dépiler la valeur à l'emplacement max de la liste, qui est stocké à l'indice 0 de la liste, python renvoi une erreur si la pile est déjà vide
+    Provoque un effet de bord"""
+    nom[nom[0]]=None
+    nom[0]-=1
+    return valeur
+
+
+def max_pile(nom:list,i:int):
+    """Renvoi l'emplacement j de la valeur max des i derniers éléments de la pile"""
+    copie_pile=list(nom) #copie la liste fournie lors de l'appel de la fonction pour éviter un effet de bord indésirable
+    if i>(copie_pile[0]):
+        0
+    else:
+        max=0
+        emplacement_max=0
+        for loop in range(1,i+1):
+            valeur=depiler(copie_pile)
+            if valeur>max:
+                max=valeur
+                j=loop
+        return j
+
+def retourner(nom:list, i:int):
+    """Inverse l'ordre des i derniers éléments de la pile
+    Provoque un effet de bord"""
+    pile2=creer_pile(i)
+    pile3=creer_pile(i)
+    for loop in range(i):
+        empiler(pile2, depiler(nom))
+    for loop in range(i):
+        empiler(pile3, depiler(pile2))
+    for loop in range(i):
+        empiler(nom, depiler(pile3))
+
+def tri_planches(nom:list):
+    """Prends en unique paramètre une liste qui représente un TAD et appelle la fonction tri qui nécessite un deuxième paramètre,
+    le nombre i qui correspond au nombre des derniers éléments qu'on souhaite traiter"""
+    tri(nom, nom[0])
+
+def tri(nom:list, i:int):
+    """Fonction récursive qui tri les i derniers éléments de façon à ce que le plus grand soit à l'indice le plus faible de la liste, la plus bas dans la pile"""
+    max=max_pile(nom, i)
+    retourner(nom, max)
+    retourner(nom, i)
+    if i<=1:
+        print('tri effectué')
+    else:
+        tri(nom,i-1)
+
+import random
+#Création d'un tas de planches d'une grandeur aléatoire comprise entre 10 à 100 planches et dont les tailles sont comprises entre 1 et 1000
+nbPlanches=random.randint(10,100)
+pile=creer_pile(nbPlanches)
+for i in range(nbPlanches):
+    empiler(pile,random.randint(1,1000))
+
+tri_planches(pile)
